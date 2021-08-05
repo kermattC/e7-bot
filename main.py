@@ -34,7 +34,7 @@ async def on_member_join(member):
   random_greeting = random.choice(greetings)
   # rand_greeting = random.randrange(0, 5)
   channel = discord.utils.get(member.guild.text_channels, name="hello")
-  await channel.send(random_greetings)
+  await channel.send(random_greeting)
 
 
   # no switch case here so we resort to if/else if
