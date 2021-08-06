@@ -7,6 +7,7 @@ from discord.ext import commands
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents)
+
 # create instance of client to connect to discord. Also apply the intents test
 client = discord.Client(intents = intents)
 
@@ -46,6 +47,7 @@ async def on_member_join(member):
 
 @bot.command(name="speed")
 async def get_speed(message):
+  print("received command")
   name = str(speed_data['Schuri'])
   base_speed = str(speed_data['speed'][0])
   set_bonus = str(speed_data['speed'][1])
