@@ -1,12 +1,17 @@
-# libraries for parsing html into stuff
 import bs4
-import itertools
-# from urllib.request import urllib
+import re
+import json
 from urllib.request import urlopen as uReq
 from urllib.request import Request
 from bs4 import BeautifulSoup as soup
 
-# we'll read the speed cheat sheet
+# preliminary variables for saving the json file
+path = './'
+fileName = 'speed_data'
+def writeToJSON(path, fileName, data):
+    filePath = '../' + "resources" + '/' + fileName + '.json'
+    with open(filePath, 'w') as fp:
+        json.dump(data, fp)
 
 # generate the request  using url and headers
 speed_sheet_url = 'https://epic7x.com/speed-cheat-sheet/'
@@ -18,8 +23,8 @@ hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML,
        'Connection': 'keep-alive'}
 
 req = Request(speed_sheet_url, headers=hdr)
-# call urllib to open the url
 
+# call urllib to open the url
 uClient = uReq(req)
 page_html = uClient.read()
 uClient.close() # be sure to close the connection when done
@@ -28,38 +33,47 @@ uClient.close() # be sure to close the connection when done
 page_soup = soup(page_html, "html.parser")
 
 # find all divs that contain the thing in the second parameter
-name_containers = page_soup.findAll("div", {"class": "pure-u-1-4 pure-u-md-1-8 text-center"}) # div containers that has the names
 speed_containers = page_soup.findAll("h4", {"class": "mt-20"}) # span containers that has the speed set stats
-name_parent_containers = page_soup.findAll("div", {"class": "pure-g"})
-# speed_set_values = page_soup.findAll("span", {"class": "awakening-stat"}) # span containers that has the speed set stats
-print("Name container length: ", len(name_containers))
-print("Speed container length: ", len(speed_containers))
-print("Pure g container length: ", len(name_parent_containers))
+group_name_containers = page_soup.findAll("div", {"class": "pure-g"}) #divs that contain all names in a row
 
-# speed_values = speed_containers[0].text.split()
-# print("kayron base speed: ", speed_values[0].strip().replace(" ", ""))
-# print("kayron with speed set: ", speed_values[1].strip("()").replace(" ", ""))
+# preliminary variables for json data
+# I'll have a bunch of values for the same key so I'll need a bunch of arrays
+jsonData = {}
+jsonData["characters"] = [] 
+character_data = []
 
-previous_speed = ""
-speed_iterator = 0
-# iterate through each container and retrieve values from their bodies
-for name_iterator in range(len(name_containers)):
-    # grab the name from its div
-    name = name_containers[name_iterator].div.text
+speed = {}
+speed['base'] = []
+speed['set_bonus'] = []
+speed_data = []
 
-    # filter the speed values since they come in an array
-    # print("DEBUG: ", speed_containers[speed_iterator].text.split())
-    speed_values = speed_containers[speed_iterator].text.split()
+# for some reason there's a bunch of white space and newlines when reading the names, so I use regex to filter them
+pattern = '\w'
 
-    if previous_speed != speed_values:
-        previous_speed = speed_values
-        speed_iterator += 1
-    base_speed = speed_values[0].strip().replace(" ", "")
-    speed_set = speed_values[1].strip("()").replace(" ", "")
+# nested for loop that iterates through each row of speed, then iterates through each column name
+# ie: each row of speed can contain more than one name, so this adheres to it
+for speed_iterator in range(len(speed_containers)):
+    speed_values = speed_containers[speed_iterator].text.split()    # get the speed from the div
 
-    print("Name: ", name)
-    print("Base speed: ", base_speed)
-    print("speed set: ", speed_set)
+    base_speed = speed_values[0].strip().replace(" ", "")   # base speed is index 0
+    set_bonus = speed_values[1].strip("()").replace(" ", "") # set bonus speed is index 1, but contains brackets so I'l remove them 
 
-    # print("Name: {}, Base speed: {}, With speed set: {}".format(name, base_speed, speed_set))
-    # print(name_containers[name_container].div.text)
+    group_name = group_name_containers[speed_iterator+2].text
+
+    # I split the lines to iterate through each line individually
+    # then I check via regex which lines contain a character, so I use those as the names
+    for line in group_name.splitlines():
+        if re.match(pattern, line):
+            name = line
+
+            speed_data.append({"base":base_speed, "set_bonus":set_bonus})
+            character_data.append({"name":name, "speed:":speed_data})
+
+            # append all those goodies into the jsonData characters array
+            jsonData["characters"].append(character_data)       
+
+            speed_data = []
+            character_data = []
+
+# finally I'll write this to the designated file (and directory)
+writeToJSON(path, fileName, jsonData)
