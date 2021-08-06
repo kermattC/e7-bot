@@ -6,7 +6,7 @@ from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.members = True
-bot = commands.Bot(command_prefix=".", intents=intents)
+bot = commands.Bot(command_prefix='.', intents=intents)
 # create instance of client to connect to discord. Also apply the intents test
 # client = discord.Client(intents = intents)
 
@@ -16,37 +16,27 @@ speed_json_data = speed_json_file.read()
 
 # parse json data
 speed_data = json.loads(speed_json_data)
+print(speed_data)
 
-@bot.command(name="test")
-async def test(ctx, arg):
-    await ctx.send(arg)
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send("Pong!")
-
-@bot.command()
-async def speed(ctx, arg):
-  print("received speed command")
-  name = str(speed_data['Schuri'])
-  base_speed = str(speed_data['speed'][0])
-  set_bonus = str(speed_data['speed'][1])
-  await ctx.send("i am speed. have some speed data bitch - Name: ", name, " Base speed: ", base_speed, " Set bonus: ", set_bonus)
-
-# create client event decorator to register an event
-@bot.event
-# called when bot is ready
-async def on_ready():
-  print("Bot logged in as {0.user}".format(bot))
-
-# main listening function for commands
-@bot.event
-async def on_message(message): # called when message is received. 
+# according to the documentation, overriding the on_message event will disable commands. Instead, use a listerner like this
+@bot.listen('on_message')
+async def message_listener(message):
+# called when message is received. 
   # however we don't want it to work when the message is from the bot itself
   if message.author == bot.user:
     return
   if message.content.startswith('.hello'):
     await message.channel.send('Hey there')
+
+@bot.event
+# called when bot is ready/logged in
+async def on_ready():
+  print("Bot logged in as {0.user}".format(bot))
+
+# use this to process commands to prevent them from not working
+@bot.event
+async def on_message(message): 
+  await bot.process_commands(message)
 
 # event when new user joins
 @bot.event
@@ -61,6 +51,23 @@ async def on_member_join(member):
   await channel.send(random_greeting)
 
 
+@bot.command(name="test")
+async def test(ctx, arg):
+    await ctx.send(arg)
+
+@bot.command(name="ping")
+async def ping(ctx):
+    await ctx.send("Pong!")
+
+@bot.command(name="speed")
+async def speed(ctx, *, arg):
+  try:
+    base_speed = speed_data[arg]["base"]
+    set_bonus = speed_data[arg]["set_bonus"]
+    await ctx.send("Name: {} | Base speed: {} | With speed set bonus: {}".format(arg, base_speed, set_bonus))
+  except KeyError:
+    await ctx.send("Sorry, couldn't find that unit's speed. Please make sure you type in the **full** name in **lowercase**.")
+  
 # lastly, run the bot
 token = os.environ['TOKEN']
 bot.run(token)

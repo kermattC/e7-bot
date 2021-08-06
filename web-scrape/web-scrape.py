@@ -37,27 +37,6 @@ speed_containers = page_soup.findAll("h4", {"class": "mt-20"}) # span containers
 group_name_containers = page_soup.findAll("div", {"class": "pure-g"}) #divs that contain all names in a row
 name_containers = page_soup.findAll("div", {"class": "f-12 mt-20 lh-15"})
 
-print("Name container 1: ", name_containers[1].text)
-print("Name container length: ", len(name_containers))
-
-# name_dictionary = {}
-# # make a dictionary for character names and their respective index
-# for name in range(len(name_containers)):
-#     name_dictionary[name_containers[name].text] = name
-# print("Name dictionary?: ", name_dictionary)
-
-# preliminary variables for json data
-# I'll have a bunch of values for the same key so I'll need a bunch of arrays
-"""
-jsonData = {}
-jsonData["characters"] = [] 
-character_data = []
-
-speed = {}
-speed['base'] = []
-speed['set_bonus'] = []
-speed_data = []
-"""
 character_data = {}
 speed = {}
 
@@ -82,18 +61,6 @@ for speed_iterator in range(len(speed_containers)):
 
             speed = {"base": base_speed, "set_bonus": set_bonus}
             character_data[name] = speed
-            """
-            speed_data.append({"base":base_speed, "set_bonus":set_bonus})
-            character_data.append({"name":name, "s  ed:":speed_data})
-            print("Character data: ", character_data)
-
-            # append all those goodies into the jsonData characters array
-            jsonData["characters"].append(character_data)       
-
-            speed_data = []
-            character_data = []
-            """
-print("Character data: ", character_data)
 
 # finally I'll write this to the designated file (and directory)
 writeToJSON(path, fileName, character_data)
