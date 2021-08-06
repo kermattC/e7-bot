@@ -4,8 +4,9 @@ A discord bot I made for my friend's server for a mobile game. The token is not 
 Features:
 - automatic greeting that mentions new user upon joining server
 - speed lookup
-  - uses web scraping to grab data from a website. the data is the corresponding speed for each character in the game. the data is then parsed into a JSON file inside of the resources folder
-  - url for reference: https://epic7x.com/speed-cheat-sheet/
-  - in main.py, upon receiving the command the second argument will be the key in the dictionary - which the bot will use to retrieve the details for the specified character
+  - uses beautiful soup and urllib to grab html from website (url for reference: https://epic7x.com/speed-cheat-sheet/)
+  - the data is the corresponding speed for each character in the game. the data is then parsed into a JSON file inside of the resources folder
+  - in main.py, the bot reads the file and upon receiving the command the second argument will be the key in the dictionary - which the bot will use to retrieve the details for the specified character
   - example of use:
-  -   .speed schuri   -> Name: schuri | Base speed: 110 | With speed set bonus: 138
+  - type in .speed schuri   
+    - which the bot will return: Name: schuri | Base speed: 110 | With speed set bonus: 138
