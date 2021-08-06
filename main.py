@@ -5,7 +5,7 @@ from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.members = True
-# bot=commands.Bot(command_prefix='.',intents=intents)
+bot = commands.Bot(command_prefix='.', intents=intents)
 # create instance of client to connect to discord. Also apply the intents test
 client = discord.Client(intents = intents)
 
@@ -36,16 +36,9 @@ async def on_member_join(member):
   channel = discord.utils.get(member.guild.text_channels, name="hello")
   await channel.send(random_greeting)
 
-
-  # no switch case here so we resort to if/else if
-  # if rand_greeting == 0:
-  #   await channel.send(f"Welcome to our discord server {mention}! Please change your nickname to your e7 name so everyone knows who you are! Feel free to chat about anything")
-  # elif rand_greeting == 1:
-  #   await channel.send(f"Do you hear the approaching ruin {mention}? Just kidding! Welcome to the server and please change your nickname to your e7 name so we know who you are!")
-  # elif rand_greeting == 2:
-  #   await channel.send(f"Glad you made it {mention}!  Please change your nickname to your e7 name so we know who you are!")
-  # elif rand_greeting == 3:
-  #   await channel.send(f"Hello and welcome to the discord {mention}! Please change your nickname to your e7 name so we know who you are!")
+@bot.command(name="speed")
+async def get_speed(message):
+  await message.channel.send("i am speed")
 
 # lastly, run the bot
 token = os.environ['TOKEN']
