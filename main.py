@@ -1,6 +1,7 @@
 import os
 import discord
 import random
+import json
 from discord.ext import commands
 
 intents = discord.Intents.default()
@@ -8,6 +9,13 @@ intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents)
 # create instance of client to connect to discord. Also apply the intents test
 client = discord.Client(intents = intents)
+
+# read json speed data
+speed_json_file = open('jsonfiles\empoyee.json', 'r')
+speed_json_data = speed_json_file.read()
+
+# parse
+speed_data = json.loads(speed_json_data)
 
 # create client event decorator to register an event
 @client.event
@@ -38,8 +46,11 @@ async def on_member_join(member):
 
 @bot.command(name="speed")
 async def get_speed(message):
-  await message.channel.send("i am speed")
-
+  name = str(speed_data['Schuri'])
+  base_speed = str(speed_data['speed'][0])
+  set_bonus = str(speed_data['speed'][1])
+  await message.channel.send("i am speed. have some speed data bitch - Name: ", name, " Base speed: ", base_speed, " Set bonus: ", set_bonus)
+  await message.channel.send("Oh yeah here's your message: ", message)
 # lastly, run the bot
 token = os.environ['TOKEN']
 client.run(token)
