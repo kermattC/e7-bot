@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix='.', intents=intents)
 client = discord.Client(intents = intents)
 
 # read json speed data
-speed_json_file = open('jsonfiles\empoyee.json', 'r')
+speed_json_file = open('resources/speed_data.json', 'r')
 speed_json_data = speed_json_file.read()
 
 # parse
