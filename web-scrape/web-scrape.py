@@ -35,9 +35,20 @@ page_soup = soup(page_html, "html.parser")
 # find all divs that contain the thing in the second parameter
 speed_containers = page_soup.findAll("h4", {"class": "mt-20"}) # span containers that has the speed set stats
 group_name_containers = page_soup.findAll("div", {"class": "pure-g"}) #divs that contain all names in a row
+name_containers = page_soup.findAll("div", {"class": "f-12 mt-20 lh-15"})
+
+print("Name container 1: ", name_containers[1].text)
+print("Name container length: ", len(name_containers))
+
+# name_dictionary = {}
+# # make a dictionary for character names and their respective index
+# for name in range(len(name_containers)):
+#     name_dictionary[name_containers[name].text] = name
+# print("Name dictionary?: ", name_dictionary)
 
 # preliminary variables for json data
 # I'll have a bunch of values for the same key so I'll need a bunch of arrays
+"""
 jsonData = {}
 jsonData["characters"] = [] 
 character_data = []
@@ -46,6 +57,9 @@ speed = {}
 speed['base'] = []
 speed['set_bonus'] = []
 speed_data = []
+"""
+character_data = {}
+speed = {}
 
 # for some reason there's a bunch of white space and newlines when reading the names, so I use regex to filter them
 pattern = '\w'
@@ -64,16 +78,22 @@ for speed_iterator in range(len(speed_containers)):
     # then I check via regex which lines contain a character, so I use those as the names
     for line in group_name.splitlines():
         if re.match(pattern, line):
-            name = line
+            name = line.lower()
 
+            speed = {"base": base_speed, "set_bonus": set_bonus}
+            character_data[name] = speed
+            """
             speed_data.append({"base":base_speed, "set_bonus":set_bonus})
-            character_data.append({"name":name, "speed:":speed_data})
+            character_data.append({"name":name, "s  ed:":speed_data})
+            print("Character data: ", character_data)
 
             # append all those goodies into the jsonData characters array
             jsonData["characters"].append(character_data)       
 
             speed_data = []
             character_data = []
+            """
+print("Character data: ", character_data)
 
 # finally I'll write this to the designated file (and directory)
-writeToJSON(path, fileName, jsonData)
+writeToJSON(path, fileName, character_data)
