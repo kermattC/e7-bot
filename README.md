@@ -1,5 +1,5 @@
 # e7-bot
-A discord bot I made for my friend's server for a mobile game
+A discord bot I made for my friend's server for a mobile game. The token is not uploaded here of course, but you can use your own token to create your own bot with these features
 
 Features:
 - automatic greeting that mentions new user upon joining server
