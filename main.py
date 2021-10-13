@@ -16,7 +16,6 @@ speed_json_data = speed_json_file.read()
 
 # parse json data
 speed_data = json.loads(speed_json_data)
-print(speed_data)
 
 # according to the documentation, overriding the on_message event will disable commands. Instead, use a listerner like this
 @bot.listen('on_message')
