@@ -59,6 +59,7 @@ async def ping(ctx):
     await ctx.send("Pong!")
 
 @bot.command(name="speed")
+  await ctx.send("test")
 async def speed(ctx, *, arg):
   try:
     base_speed = speed_data[arg]["base"]
