@@ -42,8 +42,8 @@ async def on_message(message):
 async def on_member_join(member):
   # get the member's mention
   mention = member.mention
-  greetings = [f"Welcome to our discord server {mention}! Please change your nickname to your e7 name so everyone knows who you are! Feel free to chat about anything", f"Do you hear the approaching ruin {mention}? Just kidding! Welcome to the server and please change your nickname to your e7 name so we know who you are!", f"Glad you made it {mention}!  Please change your nickname to your e7 name so we know who you are!", f"Hello and welcome to the discord {mention}! Please change your nickname to your e7 name so we know who you are!"]
-  # generate random intenger from 0 to 4
+  greetings = [f"Welcome to our discord server {mention}! Please change your nickname to your e7 name so everyone knows who you are! Feel free to chat about anything", f"Do you hear the approaching ruin {mention}? Just kidding! Welcome to the server and please change your nickname to your e7 name so we know who you are!", f"Glad you made it {mention}!  Please change your nickname to your e7 name so we know who you are!"]
+  # randomly pick one of the strings in the array of greetings
   random_greeting = random.choice(greetings)
   # rand_greeting = random.randrange(0, 5)
   channel = discord.utils.get(member.guild.text_channels, name="hello")
