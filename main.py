@@ -42,7 +42,7 @@ async def on_message(message):
 async def on_member_join(member):
   # get the member's mention
   mention = member.mention
-  greetings = [f"Welcome to our discord server {mention}! Please change your nickname to your e7 name so everyone knows who you are! Feel free to chat about anything", f"Do you hear the approaching ruin {mention}? Just kidding! Welcome to the server and please change your nickname to your e7 name so we know who you are!", f"Glad you made it {mention}!  Please change your nickname to your e7 name so we know who you are!", f"Hello and welcome to the discord {mention}! Please change your nickname to your e7 name so we know who you are!"]
+  greetings = [f"Welcome to our discord server {mention}! Please change your nickname to your e7 name so everyone knows who you are! Feel free to chat about anything", f"Do you hear the approaching ruin {mention}? Just kidding! Welcome to the server and please change your nickname to your e7 name so we know who you are!", f"Glad you made it {mention}!  Please change your nickname to your e7 name so we know who you are!"]
   # generate random intenger from 0 to 4
   random_greeting = random.choice(greetings)
   # rand_greeting = random.randrange(0, 5)
@@ -68,5 +68,6 @@ async def speed(ctx, *, arg):
     await ctx.send("Sorry, couldn't find that unit's speed. Please make sure you type in the **full** name in **lowercase**.")
   
 # lastly, run the bot
-token = os.environ['TOKEN']
-bot.run(token)
+# token = os.environ['TOKEN']
+# bot.run(token)
+bot.run('NDgyMDM0MTMwODc2MzY2ODQ5.Dl_EIg.TKMT95vUe4q3fU9q74T_4Y4S408')
