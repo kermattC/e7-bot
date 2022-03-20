@@ -68,6 +68,5 @@ async def speed(ctx, *, arg):
     await ctx.send("Sorry, couldn't find that unit's speed. Please make sure you type in the **full** name in **lowercase**.")
   
 # lastly, run the bot
-# token = os.environ['TOKEN']
-# bot.run(token)
-bot.run('NDgyMDM0MTMwODc2MzY2ODQ5.Dl_EIg.TKMT95vUe4q3fU9q74T_4Y4S408')
+token = os.environ['TOKEN']
+bot.run(token)
